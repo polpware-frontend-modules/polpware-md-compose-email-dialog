@@ -12,7 +12,7 @@ export interface IComposeEmailDialogInput {
     title: string;
     emailBody: string;
     emailTitle: string;
-    processor?: (a: IComposeEmailDialogOutput) => Promise<void>;
+    processor?: (a: IComposeEmailDialogOutput) => Promise<any>;
 }
 export declare class ComposeEmailDialogComponent extends EmailFormAbstractComponent {
     dialogRef: MatDialogRef<ComposeEmailDialogComponent>;
