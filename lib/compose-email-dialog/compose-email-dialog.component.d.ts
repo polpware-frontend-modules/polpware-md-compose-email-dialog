@@ -14,7 +14,11 @@ export interface IComposeEmailDialogInput {
     emailBody: string;
     emailTitle: string;
     processor?: (a: IComposeEmailDialogOutput) => Promise<any>;
-    autocompleteObservable?: (text: string) => Observable<Response>;
+    autocompleteObservable?: (text: string) => Observable<Array<IAutoCompleteModel>>;
+}
+export interface IAutoCompleteModel {
+    value: any;
+    display: string;
 }
 export declare class ComposeEmailDialogComponent extends EmailFormAbstractComponent {
     dialogRef: MatDialogRef<ComposeEmailDialogComponent>;
@@ -23,7 +27,7 @@ export declare class ComposeEmailDialogComponent extends EmailFormAbstractCompon
     alertSubMessage: string;
     alertType: AlertTypeEnum;
     alertDismissible: boolean;
-    requestAutocompleteItems: (text: string) => Observable<Response>;
+    requestAutocompleteItems: (text: string) => Observable<Array<IAutoCompleteModel>>;
     constructor(dialogRef: MatDialogRef<ComposeEmailDialogComponent>, data: IComposeEmailDialogInput);
     readonly isSubmitDisabled: boolean;
     onSubmit(): void;
