@@ -4,7 +4,9 @@
   "peerDependencies": {
     "@angular/common": "^7.2.0",
     "@angular/core": "^7.2.0",
-    "@polpware/md-components": "https://github.com/polpware-frontend-modules/polpware-md-components.git"
+    "@polpware/md-components": "https://github.com/polpware-frontend-modules/polpware-md-components.git",
+    "ngx-chips": "2.x",
+    "ngx-autosize": "1.x"
   },
   "main": "bundles/polpware-md-compose-email-dialog.umd.js",
   "module": "fesm5/polpware-md-compose-email-dialog.js",
