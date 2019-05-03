@@ -50,7 +50,8 @@
             _this.alertSubMessage = '';
             _this.alertType = mdComponents.AlertTypeEnum.none;
             _this.alertDismissible = false;
-            _this.requestAutocompleteItems = data.autocompleteObservable || null;
+            _this.onTextChange = data.onTextChange;
+            _this.autocompleteItemsAsync = data.autocompleteItemsAsync;
             return _this;
         }
         Object.defineProperty(ComposeEmailDialogComponent.prototype, "isSubmitDisabled", {
@@ -62,6 +63,24 @@
             enumerable: true,
             configurable: true
         });
+        // Override
+        // Override
+        /**
+         * @param {?} evt
+         * @return {?}
+         */
+        ComposeEmailDialogComponent.prototype.onOutOfTagInput =
+            // Override
+            /**
+             * @param {?} evt
+             * @return {?}
+             */
+            function (evt) {
+                if (this.emailInputBox.dropdown && this.emailInputBox.dropdown.isVisible) {
+                    return;
+                }
+                _super.prototype.onOutOfTagInput.call(this, evt);
+            };
         // Override
         // Override
         /**
@@ -135,7 +154,7 @@
         ComposeEmailDialogComponent.decorators = [
             { type: core.Component, args: [{
                         selector: 'polp-md-compose-email-dialog',
-                        template: "<h2 mat-dialog-title>\n    {{title}}\n    <button class=\"float-right\"\n            mat-icon-button\n            tabIndex=\"-1\"\n            [mat-dialog-close]=\"true\">\n        <mat-icon>close</mat-icon>\n    </button>\n</h2>\n\n<mat-dialog-content>\n\n    <polp-md-alert-box [message]=\"alertMessage\"\n                       [subMessage]=\"alertSubMessage\"\n                       [kind]=\"alertType\"\n                       [dismissible]=\"alertDismissible\">\n    </polp-md-alert-box>\n\n    <form name=\"emailForm\" autocomplete=\"off\">\n        <div class=\"flex-box flex-column margin-bottom-15\">\n            <tag-input [(ngModel)]=\"emails\" #emailInputBox\n                       name=\"emailInputs\"\n                       [addOnPaste]=\"true\"\n                       [modelAsStrings]=\"true\"\n                       [trimTags]=\"true\"\n                       [editable]=\"true\"\n                       [errorMessages]=\"errorMessages\"\n                       [validators]=\"validators\"\n                       [secondaryPlaceholder]=\"'Emails'\"\n                       [separatorKeyCodes]=\"[32,44,58,59]\"\n                       [placeholder]=\"'Type Emails'\">\n                <tag-input-dropdown *ngIf=\"requestAutocompleteItems\"\n                    [autocompleteObservable]=\"requestAutocompleteItems\"\n                    [minimumTextLength]=\"0\">\n                    <ng-template let-item=\"item\" let-index=\"index\">\n                        {{ item.display }}\n                    </ng-template>\n                </tag-input-dropdown>\n            </tag-input>\n\n            <div class=\"full-width margin-top-10\">\n                <textarea name=\"messageBodyInput\"\n                          class=\"full-width\"\n                          #emailBody\n                          autosize [minRows]=\"5\" [maxRows]=\"10\"\n                          placeholder=\"Type your personal message here\"\n                          [(ngModel)]=\"messageBody\">\n                </textarea>\n            </div>\n\n        </div>\n    </form>\n\n</mat-dialog-content>\n\n<mat-dialog-actions>\n    <button mat-flat-button\n            color=\"primary\"\n            [disabled]=\"isSubmitDisabled\"\n            (click)=\"onSubmit()\">\n        Send\n    </button>\n</mat-dialog-actions>\n",
+                        template: "<h2 mat-dialog-title>\n    {{title}}\n    <button class=\"float-right\"\n            mat-icon-button\n            tabIndex=\"-1\"\n            [mat-dialog-close]=\"true\">\n        <mat-icon>close</mat-icon>\n    </button>\n</h2>\n\n<mat-dialog-content>\n\n    <polp-md-alert-box [message]=\"alertMessage\"\n                       [subMessage]=\"alertSubMessage\"\n                       [kind]=\"alertType\"\n                       [dismissible]=\"alertDismissible\">\n    </polp-md-alert-box>\n\n    <form name=\"emailForm\" autocomplete=\"off\">\n        <div class=\"flex-box flex-column margin-bottom-15\">\n            <tag-input [(ngModel)]=\"emails\" #emailInputBox\n                       name=\"emailInputs\"\n                       (focusout)=\"onOutOfTagInput($event)\"\n                       (onTextChange)=\"onTextChange($event)\"\n                       [addOnPaste]=\"true\"\n                       [modelAsStrings]=\"true\"\n                       [trimTags]=\"true\"\n                       [editable]=\"true\"\n                       [errorMessages]=\"errorMessages\"\n                       [validators]=\"validators\"\n                       [secondaryPlaceholder]=\"'Emails'\"\n                       [separatorKeyCodes]=\"[32,44,58,59]\"\n                       [displayBy]=\"'display'\"\n                       [identifyBy]=\"'value'\"                       \n                       [placeholder]=\"'Emails'\">\n                <tag-input-dropdown [autocompleteItems]=\"autocompleteItemsAsync | async\">\n                    <ng-template let-item=\"item\" let-index=\"index\">\n                        {{ item.display }}\n                    </ng-template>\n                </tag-input-dropdown>\n            </tag-input>\n\n            <div class=\"full-width margin-top-10\">\n                <textarea name=\"messageBodyInput\"\n                          class=\"full-width\"\n                          #emailBody\n                          autosize [minRows]=\"5\" [maxRows]=\"10\"\n                          placeholder=\"Type your personal message here\"\n                          [(ngModel)]=\"messageBody\">\n                </textarea>\n            </div>\n\n        </div>\n    </form>\n\n</mat-dialog-content>\n\n<mat-dialog-actions>\n    <button mat-flat-button\n            color=\"primary\"\n            [disabled]=\"isSubmitDisabled\"\n            (click)=\"onSubmit()\">\n        Send\n    </button>\n</mat-dialog-actions>\n",
                         styles: [""]
                     }] }
         ];

@@ -2,6 +2,10 @@ import { MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs';
 import { EmailFormAbstractComponent } from '@polpware/md-components';
 import { AlertTypeEnum } from '@polpware/md-components';
+export interface IAutoCompleteModel {
+    value: any;
+    display: string;
+}
 export interface IComposeEmailDialogOutput {
     confirmed?: boolean;
     emailReceivers?: string[];
@@ -14,11 +18,8 @@ export interface IComposeEmailDialogInput {
     emailBody: string;
     emailTitle: string;
     processor?: (a: IComposeEmailDialogOutput) => Promise<any>;
-    autocompleteObservable?: (text: string) => Observable<Array<IAutoCompleteModel>>;
-}
-export interface IAutoCompleteModel {
-    value: any;
-    display: string;
+    onTextChange?: (any: any) => any;
+    autocompleteItemsAsync?: Observable<Array<IAutoCompleteModel>>;
 }
 export declare class ComposeEmailDialogComponent extends EmailFormAbstractComponent {
     dialogRef: MatDialogRef<ComposeEmailDialogComponent>;
@@ -27,8 +28,10 @@ export declare class ComposeEmailDialogComponent extends EmailFormAbstractCompon
     alertSubMessage: string;
     alertType: AlertTypeEnum;
     alertDismissible: boolean;
-    requestAutocompleteItems: (text: string) => Observable<Array<IAutoCompleteModel>>;
+    onTextChange: (any: any) => any;
+    autocompleteItemsAsync: Observable<Array<IAutoCompleteModel>>;
     constructor(dialogRef: MatDialogRef<ComposeEmailDialogComponent>, data: IComposeEmailDialogInput);
     readonly isSubmitDisabled: boolean;
+    onOutOfTagInput(evt: any): void;
     onSubmit(): void;
 }
